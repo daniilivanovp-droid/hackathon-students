@@ -30,6 +30,7 @@ bash scripts/setup.sh
 4. [docs/implementation-task.md](docs/implementation-task.md) — чек-лист реализации и проверок для команды.
 5. [docs/answers.md](docs/answers.md) — результаты и состояние проверки пяти ответов.
 6. [docs/decision-note.md](docs/decision-note.md), [docs/dashboard.md](docs/dashboard.md), [docs/growth.md](docs/growth.md) — материалы для защиты.
+7. [docs/defense-report.md](docs/defense-report.md) — подробный отчёт с объяснением решений и ответами на возможные вопросы защиты.
 
 Вопросов в файле пять, но это не весь список: ещё пять появятся там же
 в середине хакатона. Заранее их нет намеренно.
@@ -49,7 +50,8 @@ bash scripts/setup.sh
 │   ├── answers.md                результаты пяти запросов
 │   ├── decision-note.md          короткая записка о решениях
 │   ├── dashboard.md              концепция дашборда продаж
-│   └── growth.md                 стратегия развития
+│   ├── growth.md                 стратегия развития
+│   └── defense-report.md         отчёт для защиты
 │
 ├── model/
 │   ├── 01_build_core.sql         сборка core и mart
@@ -111,7 +113,9 @@ Docker Desktop или Docker Engine с плагином compose. Python 3.10+
 с пакетом `psycopg2-binary` — `setup.sh` поставит его сам, если нет.
 Для Windows запускайте команды в Git Bash. Проверить Python можно командой
 `py -3 --version`; скрипт попробует `python3`, затем `py -3`, затем `python`
-и пропустит неработающие алиасы Microsoft Store.
+и пропустит неработающие алиасы Microsoft Store. `setup.sh` и `model/run.sh`
+сами ищут Docker CLI в стандартных папках установки Docker Desktop, если его
+нет в `PATH`.
 SQL-клиент по вкусу: DBeaver, psql внутри контейнера или веб-клиент
 pgAdmin (`docker compose --profile tools up -d`, потом
 http://localhost:8080).

@@ -1,6 +1,6 @@
 # Чистая установка: успешный запуск
 
-28 октября 2026 года выполнена команда `bash scripts/setup.sh --reset` в Git Bash. В этой сессии к `PATH` добавлен каталог уже установленного Docker Desktop: `C:\Users\happy\AppData\Local\Programs\DockerDesktop\resources\bin`. Скрипт выбрал `py -3`, установил `psycopg2-binary`, запустил PostgreSQL 16 и без ручной правки CSV загрузил `raw`.
+28 октября 2026 года выполнена команда `bash scripts/setup.sh --reset` в Git Bash. Для первого чистого прогона к `PATH` сессии был добавлен каталог уже установленного Docker Desktop: `C:\Users\happy\AppData\Local\Programs\DockerDesktop\resources\bin`. Скрипт выбрал `py -3`, установил `psycopg2-binary`, запустил PostgreSQL 16 и без ручной правки CSV загрузил `raw`. Затем `setup.sh` повторно успешно запущен **без ручного изменения `PATH`** после добавления автоматического поиска Docker CLI.
 
 Выдержка из вывода загрузчика и повторная проверка SQL:
 
