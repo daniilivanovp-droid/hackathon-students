@@ -1,0 +1,172 @@
+SET
+DO
+DROP VIEW
+DROP VIEW
+DROP VIEW
+DROP VIEW
+DROP VIEW
+DROP TABLE
+DROP TABLE
+DROP TABLE
+DROP TABLE
+DROP TABLE
+DROP TABLE
+DROP TABLE
+DROP TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE INDEX
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+INSERT 0 99441
+INSERT 0 3095
+INSERT 0 74
+INSERT 0 32951
+INSERT 0 99441
+INSERT 0 112650
+INSERT 0 103886
+INSERT 0 99224
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+DO
+DO
+DO
+DO
+DO
+   month    | order_count |  revenue  
+------------+-------------+-----------
+ 2016-09-01 |           1 |    134.97
+ 2016-10-01 |         265 |  40325.11
+ 2016-11-01 |           0 |      0.00
+ 2016-12-01 |           1 |     10.90
+ 2017-01-01 |         750 | 111798.36
+ 2017-02-01 |        1653 | 234223.40
+ 2017-03-01 |        2546 | 359198.85
+ 2017-04-01 |        2303 | 340669.68
+ 2017-05-01 |        3546 | 489338.25
+ 2017-06-01 |        3135 | 421923.37
+ 2017-07-01 |        3872 | 481604.52
+ 2017-08-01 |        4193 | 554699.70
+ 2017-09-01 |        4150 | 607399.67
+ 2017-10-01 |        4478 | 648247.65
+ 2017-11-01 |        7289 | 987765.37
+ 2017-12-01 |        5513 | 726033.19
+ 2018-01-01 |        7069 | 924645.00
+ 2018-02-01 |        6555 | 826437.13
+ 2018-03-01 |        7003 | 953356.25
+ 2018-04-01 |        6798 | 973534.09
+ 2018-05-01 |        6749 | 977544.69
+ 2018-06-01 |        6099 | 856077.86
+ 2018-07-01 |        6159 | 867953.46
+ 2018-08-01 |        6351 | 838576.64
+(24 rows)
+
+            seller_id             |       city       | state | order_count | unit_count |  revenue  
+----------------------------------+------------------+-------+-------------+------------+-----------
+ 4869f7a5dfa277a7dca6462dcf3b52b2 | guariba          | SP    |        1124 |       1148 | 226987.93
+ 53243585a1d6dc2643021fd1853d8905 | lauro de freitas | BA    |         348 |        400 | 217940.44
+ 4a3ca9315b744ce9f8e9374361493884 | ibitinga         | SP    |        1772 |       1949 | 196882.12
+ fa1c13f2614d7b5c4749cbc52fecda94 | sumare           | SP    |         578 |        579 | 190917.14
+ 7c67e1448b00f6e969d365cea6b010ab | itaquaquecetuba  | SP    |         973 |       1355 | 186570.05
+ 7e93a43ef30c4f03f38b393420bc753a | barueri          | SP    |         319 |        322 | 165981.49
+ da8622b14eb17ae2831f4ac5b9dab84a | piracicaba       | SP    |        1311 |       1548 | 159816.87
+ 7a67c85e85bb2ce8582c35f2203ad736 | sao paulo        | SP    |        1145 |       1155 | 139658.69
+ 1025f0e2d44d7041d6cf58b6550e0bfa | sao paulo        | SP    |         910 |       1420 | 138208.56
+ 955fee9216a65b617aa5c0531780ce60 | sao paulo        | SP    |        1261 |       1472 | 131836.71
+(10 rows)
+
+ average_order_value | average_lines_per_order | average_units_per_order 
+---------------------+-------------------------+-------------------------
+              159.88 |                    1.14 |                    1.14
+(1 row)
+
+ total_customers | repeat_customers | repeat_share_pct 
+-----------------+------------------+------------------
+           96096 |             2997 |             3.12
+(1 row)
+
+                category                 |  revenue   | revenue_share_pct 
+-----------------------------------------+------------+-------------------
+ health_beauty                           | 1233131.72 |             9.327
+ watches_gifts                           | 1166176.98 |             8.820
+ bed_bath_table                          | 1023434.76 |             7.741
+ sports_leisure                          |  954852.55 |             7.222
+ computers_accessories                   |  888724.61 |             6.722
+ furniture_decor                         |  711927.69 |             5.385
+ housewares                              |  615628.69 |             4.656
+ cool_stuff                              |  610204.10 |             4.615
+ auto                                    |  578966.65 |             4.379
+ toys                                    |  471286.48 |             3.565
+ garden_tools                            |  470495.28 |             3.559
+ baby                                    |  400421.84 |             3.029
+ perfumery                               |  390144.65 |             2.951
+ telephony                               |  309860.23 |             2.344
+ office_furniture                        |  268154.31 |             2.028
+ stationery                              |  223788.69 |             1.693
+ computers                               |  218684.14 |             1.654
+ pet_shop                                |  211695.64 |             1.601
+ musical_instruments                     |  184315.74 |             1.394
+ small_appliances                        |  182754.12 |             1.382
+ Non category                            |  170726.63 |             1.291
+ electronics                             |  155043.93 |             1.173
+ fashion_bags_accessories                |  149329.39 |             1.129
+ consoles_games                          |  148003.37 |             1.119
+ construction_tools_construction         |  142108.49 |             1.075
+ luggage_accessories                     |  138701.63 |             1.049
+ home_appliances_2                       |  107953.95 |             0.817
+ home_construction                       |   81407.57 |             0.616
+ home_appliances                         |   78832.48 |             0.596
+ agro_industry_and_commerce              |   70566.10 |             0.534
+ furniture_living_room                   |   67350.70 |             0.509
+ home_confort                            |   58008.45 |             0.439
+ fixed_telephony                         |   55315.21 |             0.418
+ air_conditioning                        |   53323.56 |             0.403
+ audio                                   |   50570.60 |             0.382
+ small_appliances_home_oven_and_coffee   |   46589.56 |             0.352
+ kitchen_dining_laundry_garden_furniture |   45531.98 |             0.344
+ books_general_interest                  |   45302.15 |             0.343
+ construction_tools_lights               |   39957.00 |             0.302
+ construction_tools_safety               |   38773.22 |             0.293
+ industry_commerce_and_business          |   38498.81 |             0.291
+ food                                    |   28731.15 |             0.217
+ market_place                            |   27795.77 |             0.210
+ costruction_tools_garden                |   25096.28 |             0.190
+ art                                     |   23657.30 |             0.179
+ fashion_shoes                           |   23001.46 |             0.174
+ drinks                                  |   21529.84 |             0.163
+ signaling_and_security                  |   21315.05 |             0.161
+ furniture_bedroom                       |   19051.80 |             0.144
+ books_technical                         |   18702.23 |             0.141
+ costruction_tools_tools                 |   15903.95 |             0.120
+ food_drink                              |   14942.88 |             0.113
+ fashion_male_clothing                   |   10452.33 |             0.079
+ fashion_underwear_beach                 |    9305.95 |             0.070
+ christmas_supplies                      |    8737.84 |             0.066
+ tablets_printing_image                  |    7528.41 |             0.057
+ cine_photo                              |    6674.47 |             0.050
+ music                                   |    6034.35 |             0.046
+ dvds_blu_ray                            |    4542.59 |             0.034
+ party_supplies                          |    4465.19 |             0.034
+ books_imported                          |    4418.86 |             0.033
+ furniture_mattress_and_upholstery       |    4323.38 |             0.033
+ portable_kitchen_and_food_processors    |    3933.63 |             0.030
+ fashio_female_clothing                  |    2634.94 |             0.020
+ fashion_sport                           |    2094.52 |             0.016
+ la_cuisine                              |    2054.99 |             0.016
+ arts_and_craftmanship                   |    1814.01 |             0.014
+ diapers_and_hygiene                     |    1500.79 |             0.011
+ gaming_pcs                              |    1306.95 |             0.010
+ flowers                                 |    1110.04 |             0.008
+ home_comfort_2                          |     760.27 |             0.006
+ cds_dvds_musicals                       |     730.00 |             0.006
+ fashion_childrens_clothes               |     519.95 |             0.004
+ security_and_services                   |     283.29 |             0.002
+(74 rows)
+

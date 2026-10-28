@@ -1,0 +1,7 @@
+
+==> Проверяю Docker
+
+ОШИБКА: команда docker не найдена
+
+Установите и запустите Docker Desktop. Откройте новый Git Bash и проверьте: docker --version.
+Если Docker Desktop уже установлен, добавьте его каталог с docker.exe в PATH.

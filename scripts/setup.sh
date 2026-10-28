@@ -32,18 +32,39 @@ die()   { echo; echo "ОШИБКА: $1"; echo; [ $# -gt 1 ] && echo "$2"; exit 1
 # --- 1. Docker ------------------------------------------------------
 step "Проверяю Docker"
 
+# Git Bash иногда не видит CLI уже установленного Docker Desktop.
+# Ищем только стандартные каталоги установки, не меняя системный PATH.
+add_docker_cli_from() {
+  local win_base="$1" subdir="$2" posix_base
+  [ -n "$win_base" ] || return 1
+  posix_base="$(cygpath -u "$win_base" 2>/dev/null)" || return 1
+  [ -x "$posix_base/$subdir/docker.exe" ] || return 1
+  PATH="$posix_base/$subdir:$PATH"
+  export PATH
+}
+
+if ! command -v docker >/dev/null 2>&1 && command -v cygpath >/dev/null 2>&1; then
+  add_docker_cli_from "${LOCALAPPDATA:-}" "Programs/DockerDesktop/resources/bin" \
+    || add_docker_cli_from "${ProgramFiles:-${PROGRAMFILES:-}}" "Docker/Docker/resources/bin" \
+    || true
+fi
+
 command -v docker >/dev/null 2>&1 \
   || die "команда docker не найдена" \
-         "Установите Docker Desktop, добавьте его в PATH и перезапустите Git Bash."
+         "Установите и запустите Docker Desktop. Откройте новый Git Bash и проверьте: docker --version.
+Если Docker Desktop уже установлен, добавьте его каталог с docker.exe в PATH."
 
 if ! docker info >/dev/null 2>&1; then
-  echo "    Docker daemon недоступен. Диагностика:"
-  docker version 2>&1 | sed -n '1,12p' || true
-  die "Docker установлен, но daemon не отвечает" \
-      "Запустите Docker Desktop, дождитесь статуса Running и повторите.
-Проверьте выбранный Docker context: docker context show
-Проверьте daemon отдельно: docker info
-Если используется WSL2, убедитесь, что Docker Desktop → Settings → Resources → WSL Integration включён."
+  echo "    Последние строки диагностики Docker:"
+  docker info 2>&1 | tail -n 15 || true
+  die "Docker CLI найден, но daemon не отвечает" \
+      "Откройте Docker Desktop и дождитесь запуска движка (Engine running).
+Убедитесь, что выбран режим Linux containers.
+Проверьте контекст: docker context ls и docker context show.
+Если доступен контекст desktop-linux, переключитесь: docker context use desktop-linux.
+Если задан устаревший DOCKER_HOST, удалите его из окружения и откройте новый Git Bash.
+Если работаете через WSL, проверьте Docker Desktop → Settings → Resources → WSL Integration.
+Повторите docker info, затем bash scripts/setup.sh."
 fi
 
 if docker compose version >/dev/null 2>&1; then
@@ -81,16 +102,31 @@ ok "данные на месте: $CSV_COUNT файлов"
 # --- 3. Python ------------------------------------------------------
 step "Проверяю Python"
 
-if command -v python3 >/dev/null 2>&1; then PY=python3
-elif command -v python >/dev/null 2>&1; then PY=python
-else die "не найден python" "Установите Python 3.10 или новее."; fi
+PY=()
+# В Git Bash команды python/python3 могут вести к пустым алиасам Microsoft Store.
+# Проверяем запуск и версию, а не только наличие команды в PATH.
+if command -v python3 >/dev/null 2>&1 \
+   && python3 -c 'import sys; sys.exit(sys.version_info < (3, 10))' >/dev/null 2>&1; then
+  PY=(python3)
+elif command -v py >/dev/null 2>&1 \
+     && py -3 -c 'import sys; sys.exit(sys.version_info < (3, 10))' >/dev/null 2>&1; then
+  PY=(py -3)
+elif command -v python >/dev/null 2>&1 \
+     && python -c 'import sys; sys.exit(sys.version_info < (3, 10))' >/dev/null 2>&1; then
+  PY=(python)
+else
+  die "не найден работающий Python 3.10+" \
+      "Установите Python 3.10 или новее. В Git Bash проверьте: py -3 --version.
+Если работает только алиас Microsoft Store, отключите его в Windows: Settings → Apps → Advanced app settings → App execution aliases."
+fi
+ok "использую Python: ${PY[*]}"
 
-$PY -c "import psycopg2" 2>/dev/null || {
+"${PY[@]}" -c "import psycopg2" 2>/dev/null || {
   echo "    ставлю psycopg2-binary"
-  $PY -m pip install --quiet psycopg2-binary 2>/dev/null \
-    || $PY -m pip install --quiet --break-system-packages psycopg2-binary \
+  "${PY[@]}" -m pip install --quiet psycopg2-binary 2>/dev/null \
+    || "${PY[@]}" -m pip install --quiet --break-system-packages psycopg2-binary \
     || die "не удалось поставить psycopg2-binary" \
-           "Поставьте вручную:  $PY -m pip install psycopg2-binary"
+           "Поставьте вручную:  ${PY[*]} -m pip install psycopg2-binary"
 }
 ok "python и psycopg2 готовы"
 
@@ -128,7 +164,7 @@ step "Загружаю сырые данные в схему raw"
 PORT=$(awk -F'"' '/- "[0-9]+:5432"/ {split($2,a,":"); print a[1]; exit}' docker-compose.yml)
 PORT=${PORT:-5432}
 
-$PY scripts/load_raw.py --port "$PORT" || die "загрузка не прошла" \
+"${PY[@]}" scripts/load_raw.py --port "$PORT" || die "загрузка не прошла" \
   "Сообщение об ошибке выше. Частые причины:
   - контейнер ещё не готов, подождите полминуты и повторите
   - порт 5432 занят, смотрите подсказку про 5433"
