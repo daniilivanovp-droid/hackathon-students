@@ -26,6 +26,8 @@ bash scripts/setup.sh
 1. [docs/handout.md](docs/handout.md) — задание, описание данных и что сдавать.
 2. [docs/tasks.md](docs/tasks.md) — вопросы, на которые должна отвечать
    ваша модель.
+3. [docs/architecture.md](docs/architecture.md) — согласованная архитектура и определения показателей.
+4. [docs/implementation-task.md](docs/implementation-task.md) — чек-лист реализации и проверок для команды.
 
 Вопросов в файле пять, но это не весь список: ещё пять появятся там же
 в середине хакатона. Заранее их нет намеренно.
