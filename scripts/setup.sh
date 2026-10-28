@@ -34,11 +34,17 @@ step "Проверяю Docker"
 
 command -v docker >/dev/null 2>&1 \
   || die "команда docker не найдена" \
-         "Установите Docker Desktop и запустите его, потом повторите."
+         "Установите Docker Desktop, добавьте его в PATH и перезапустите Git Bash."
 
-docker info >/dev/null 2>&1 \
-  || die "Docker установлен, но не запущен" \
-         "Откройте Docker Desktop и дождитесь, пока значок перестанет мигать."
+if ! docker info >/dev/null 2>&1; then
+  echo "    Docker daemon недоступен. Диагностика:"
+  docker version 2>&1 | sed -n '1,12p' || true
+  die "Docker установлен, но daemon не отвечает" \
+      "Запустите Docker Desktop, дождитесь статуса Running и повторите.
+Проверьте выбранный Docker context: docker context show
+Проверьте daemon отдельно: docker info
+Если используется WSL2, убедитесь, что Docker Desktop → Settings → Resources → WSL Integration включён."
+fi
 
 if docker compose version >/dev/null 2>&1; then
   DC="docker compose"
@@ -75,9 +81,20 @@ ok "данные на месте: $CSV_COUNT файлов"
 # --- 3. Python ------------------------------------------------------
 step "Проверяю Python"
 
-if command -v python3 >/dev/null 2>&1; then PY=python3
-elif command -v python >/dev/null 2>&1; then PY=python
-else die "не найден python" "Установите Python 3.10 или новее."; fi
+if command -v python3 >/dev/null 2>&1 &&
+   python3 -c "import sys; raise SystemExit(sys.version_info < (3, 10))" 2>/dev/null; then
+  PY=python3
+elif command -v python >/dev/null 2>&1 &&
+     python -c "import sys; raise SystemExit(sys.version_info < (3, 10))" 2>/dev/null; then
+  PY=python
+elif command -v py >/dev/null 2>&1 &&
+     py -3 -c "import sys; raise SystemExit(sys.version_info < (3, 10))" 2>/dev/null; then
+  PY="py -3"
+else
+  die "не найден рабочий Python 3.10+" \
+      "Установите Python 3.10 или новее и повторите.
+В Windows можно проверить launcher командой: py -3 --version"
+fi
 
 $PY -c "import psycopg2" 2>/dev/null || {
   echo "    ставлю psycopg2-binary"
@@ -150,6 +167,7 @@ echo " Схемы:        raw (данные), core (ваша модель), mart
 echo
 echo " Задание и описание данных:  docs/handout.md"
 echo " Вопросы к модели:           docs/tasks.md"
+echo " Сборка модели:              bash model/run.sh"
 echo
 echo " Веб-клиент, если нужен:  $DC --profile tools up -d"
 echo "                          потом http://localhost:8080"
