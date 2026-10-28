@@ -34,17 +34,16 @@ step "Проверяю Docker"
 
 command -v docker >/dev/null 2>&1 \
   || die "команда docker не найдена" \
-         "Установите Docker Desktop и запустите его, потом повторите."
+         "Установите Docker Desktop, добавьте его в PATH и перезапустите Git Bash."
 
-if ! DOCKER_INFO=$(docker info --format '{{.ServerVersion}}' 2>&1); then
-  echo "    docker info: $DOCKER_INFO"
-  if grep -qi microsoft /proc/sys/kernel/osrelease 2>/dev/null; then
-    die "Docker недоступен из этой WSL-системы" \
-        "Проверьте docker info в том же WSL-терминале. Если используете Docker Desktop,
-включите для этой системы Settings → Resources → WSL Integration."
-  fi
-  die "Docker CLI не может подключиться к Docker Engine" \
-      "Проверьте сообщение docker info выше и выбранный Docker context."
+if ! docker info >/dev/null 2>&1; then
+  echo "    Docker daemon недоступен. Диагностика:"
+  docker version 2>&1 | sed -n '1,12p' || true
+  die "Docker установлен, но daemon не отвечает" \
+      "Запустите Docker Desktop, дождитесь статуса Running и повторите.
+Проверьте выбранный Docker context: docker context show
+Проверьте daemon отдельно: docker info
+Если используется WSL2, убедитесь, что Docker Desktop → Settings → Resources → WSL Integration включён."
 fi
 
 if docker compose version >/dev/null 2>&1; then
